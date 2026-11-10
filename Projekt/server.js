@@ -9,7 +9,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 
 // Udostępnianie plików CSS i JS
-app.use(express.static("./assets/"));
+let sciezka = "./assets/subpages"
+app.use(express.static("./assets"));
 
 // Połączenie z bazą danych
 const connection = mysql.createConnection({
@@ -29,7 +30,7 @@ connection.connect((err) => {
 
 // STRONA GŁÓWNA
 app.get("/", (req, res) => {
-    let content = fs.readFileSync("./assets/strona.html").toString();
+    let content = fs.readFileSync(sciezka + "/strona.html").toString();
 
     content = content.replace("{{maincontent}}", "");
 
@@ -37,8 +38,8 @@ app.get("/", (req, res) => {
 });
 
 // STRONA KARUZELI
-app.get("/karuzela", (req, res) => {
-    let content = fs.readFileSync("./assets/karuzela.html").toString();
+app.get("/subpages/karuzela", (req, res) => {
+    let content = fs.readFileSync(sciezka + "/karuzela.html").toString();
 
     res.send(content);
 });
@@ -117,7 +118,7 @@ app.post("/wynik", (req, res) => {
     let nazwisko = req.body.nazwisko;
     let wiek = req.body.wiek;
 
-    let content = fs.readFileSync("./assets/strona.html").toString();
+    let content = fs.readFileSync(sciezka + "/strona.html").toString();
 
     let wynik = `
         <div class="alert alert-success">
